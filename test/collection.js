@@ -131,7 +131,7 @@ $(document).ready(function() {
     emcees.bind('change', function(){ counter++; });
     dj.set({name : 'Kool'});
     equals(counter, 1);
-    emcees.refresh([]);
+    emcees.reset([]);
     equals(dj.collection, undefined);
     dj.set({name : 'Shadow'});
     equals(counter, 1);
@@ -283,20 +283,20 @@ $(document).ready(function() {
          [0, 4]);
   });
 
-  test("Collection: refresh", function() {
-    var refreshed = 0;
+  test("Collection: reset", function() {
+    var resetCount = 0;
     var models = col.models;
-    col.bind('refresh', function() { refreshed += 1; });
-    col.refresh([]);
-    equals(refreshed, 1);
+    col.bind('reset', function() { resetCount += 1; });
+    col.reset([]);
+    equals(resetCount, 1);
     equals(col.length, 0);
     equals(col.last(), null);
-    col.refresh(models);
-    equals(refreshed, 2);
+    col.reset(models);
+    equals(resetCount, 2);
     equals(col.length, 4);
     equals(col.last(), a);
-    col.refresh(_.map(models, function(m){ return m.attributes; }));
-    equals(refreshed, 3);
+    col.reset(_.map(models, function(m){ return m.attributes; }));
+    equals(resetCount, 3);
     equals(col.length, 4);
     ok(col.last() !== a);
     ok(_.isEqual(col.last().attributes, a.attributes));
@@ -304,7 +304,7 @@ $(document).ready(function() {
 
   test("Collection: trigger custom events on models", function() {
     var fired = null;
-    a.bind("custom", function() { fired = true });
+    a.bind("custom", function() { fired = true; });
     a.trigger("custom");
     equals(fired, true);
   });

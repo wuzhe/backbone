@@ -416,7 +416,7 @@
     }
     _.bindAll(this, '_onModelEvent', '_removeReference');
     this._reset();
-    if (models) this.refresh(models, {silent: true});
+    if (models) this.reset(models, {silent: true});
     this.initialize(models, options);
   };
 
@@ -485,7 +485,7 @@
       options || (options = {});
       if (!this.comparator) throw new Error('Cannot sort a set without a comparator');
       this.models = this.sortBy(this.comparator);
-      if (!options.silent) this.trigger('refresh', this, options);
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
@@ -497,13 +497,13 @@
     // When you have more items than you want to add or remove individually,
     // you can refresh the entire set with a new list of models, without firing
     // any `added` or `removed` events. Fires `refresh` when finished.
-    refresh : function(models, options) {
+    reset : function(models, options) {
       models  || (models = []);
       options || (options = {});
       this.each(this._removeReference);
       this._reset();
       this.add(models, {silent: true});
-      if (!options.silent) this.trigger('refresh', this, options);
+      if (!options.silent) this.trigger('reset', this, options);
       return this;
     },
 
@@ -515,7 +515,7 @@
       var collection = this;
       var success = options.success;
       options.success = function(resp, status, xhr) {
-        collection[options.add ? 'add' : 'refresh'](collection.parse(resp, xhr), options);
+        collection[options.add ? 'add' : 'reset'](collection.parse(resp, xhr), options);
         if (success) success(collection, resp);
       };
       options.error = wrapError(options.error, collection, options);
