@@ -580,7 +580,6 @@
       }
       var index = this.comparator ? this.sortedIndex(model, this.comparator) : 
                   options.at != null ? options.at : this.length;
-      // console.log(['index', index, options.at]);
       this.models.splice(index, 0, model);
       model.bind('all', this._onModelEvent);
       this.length++;
